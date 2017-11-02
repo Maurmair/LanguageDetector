@@ -13,19 +13,21 @@ import java.util.Map;
 
 public class GenereerNGrams {
 
-	public static void printNGrams(Integer amountN) throws IOException {
-	
+	public static HashMap<String, Integer> getNGram(Integer amountN, String fileName) throws IOException {
+		final String startFileName = "C:\\Texts\\";
+		final String closingFileName = ".txt";
 		String tekst = "";
 		Integer totalFrequentie = 0;
 		HashMap<String, Integer> trigramns = new HashMap<String, Integer>();		
 				
-		try (BufferedReader br = new BufferedReader(new FileReader("C:\\Texts\\HarryPotterDutch.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(startFileName+fileName+closingFileName))) {
 			@SuppressWarnings("unused")
 			String line = null;
 			
 			while ((line = br.readLine()) != null) {
 				tekst = tekst + br.readLine();		
 			}			
+			
 			for (int i = 0; i + 2 < tekst.length(); i++) {								
 				String trigram = tekst.substring(i, i + amountN);
 				if (!trigramns.containsKey(trigram)) {
@@ -37,20 +39,17 @@ public class GenereerNGrams {
 					trigramns.put(trigram, waarde);
 					totalFrequentie ++;
 				}
-			}
+			}	
 			
 			List<Integer> mapValues = new ArrayList<>(trigramns.values());
 			List<String> mapKeys = new ArrayList<>(trigramns.keySet());
 			Collections.sort(mapValues);
 			Collections.sort(mapKeys);
-			
 			LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
-			
 			Iterator<Integer> valueIt = mapValues.iterator();
 			while (valueIt.hasNext()) {
 				Integer val = valueIt.next();
 				Iterator<String> keyIt = mapKeys.iterator();
-				
 				while (keyIt.hasNext()) {
 					String key = keyIt.next();
 					Integer comp1 = trigramns.get(key);
@@ -61,13 +60,14 @@ public class GenereerNGrams {
 						break;
 					}
 				}
-			}			
+			}	
 			
 			for (Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
 				String key = entry.getKey();
 				int value = entry.getValue();
 				System.out.println(key + " => " + value); 
-			}				
+			}	
+			return sortedMap;
 		}
 	}
 }

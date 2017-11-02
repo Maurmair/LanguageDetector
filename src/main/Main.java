@@ -10,6 +10,17 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {		
 		
+		/*
+		 * TODO INPUT VAN GEBRUIKER
+		 * TODO INPUT VAN GEBRUIKER VERTALEN NAAR BI EN TRIGRAMMEN EN UNIGRAMMEN
+		 * TODO VOOR IEDERE BI/TRIGRAM CHECKEN OF DIE IN MAP IS, KANSEN MET ELKAAR VERMENIGVULDIGEN
+		 * TODO TRI DELEN DOOR BI
+		 * TODO BI DELEN UNI
+		 * TODO PRODUCT VAN TRI / BI -> KANS VOOR BEPAALDE TAAL
+		 * TODO HOOGSTE VAN IEDERE TAAL => TAAL
+		 */
+		
+		
 		WriteHashMapToFile.writeFile(GenereerNGrams.getNGram(3, "HarryPotterNederlands"), "NLTrigram");
 		WriteHashMapToFile.writeFile(GenereerNGrams.getNGram(3, "HarryPotterDuits"), "GETrigram");
 		WriteHashMapToFile.writeFile(GenereerNGrams.getNGram(3, "HarryPotterEngels"), "ENTrigram");
@@ -30,5 +41,6 @@ public class Main {
 		WriteHashMapToFile.writeFile(GenereerNGrams.getNGram(1, "HarryPotterFrans"), "FRUnigram");
 		WriteHashMapToFile.writeFile(GenereerNGrams.getNGram(1, "HarryPotterIteliaans"), "ITUnigram");
 		WriteHashMapToFile.writeFile(GenereerNGrams.getNGram(1, "HarryPotterSpaans"), "SPUnigram");
+		
 	}
 }

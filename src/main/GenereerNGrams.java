@@ -43,46 +43,16 @@ public class GenereerNGrams {
 				}
 			}	
 			
-//			List<Integer> mapValues = new ArrayList<>(trigramns.values());
-//			List<String> mapKeys = new ArrayList<>(trigramns.keySet());
-//			Collections.sort(mapValues);
-//			Collections.sort(mapKeys);
-//			LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
-//			Iterator<Integer> valueIt = mapValues.iterator();
-//			while (valueIt.hasNext()) {
-//				Integer val = valueIt.next();
-//				Iterator<String> keyIt = mapKeys.iterator();
-//				while (keyIt.hasNext()) {
-//					String key = keyIt.next();
-//					Integer comp1 = trigramns.get(key);
-//					Integer comp2 = val;
-//					if (comp1.equals(comp2)) {
-//						keyIt.remove();
-//						sortedMap.put(key, val);
-//						break;
-//					}
-//				}
-//			}	
-			
-			
-			/*
-			 * //Frequenties omzetten naar kansen
-					dictionary.forEach(function(value,key){
-						var kans = value / (text.length - 2);
-						dictionary.set(key,kans);
-					});
-			 */
 			for (Map.Entry<String, Double> entry : trigramns.entrySet()) {				
 				String key = entry.getKey();
 				Double value = entry.getValue();
 				Double kans = value / (tekst.length() - 2);
-//				entry.setValue(kans);
 				kansen.put(key, kans);
-				System.out.println(key + " => " + value);
-				System.out.println(key + " => " + kans); 
+//				System.out.println(key + " => " + value);
+//				System.out.println(key + " => " + kans); 
 			}	
-//			return sortedMap;
 			return kansen;
 		}
+		
 	}
 }

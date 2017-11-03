@@ -3,13 +3,20 @@ package main;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 public class BerekenKansOpTaalTrigramMethode {
 	
+	@SuppressWarnings("null")
 	public static void berekenKansTrigrammen() throws IOException{		
 				
 		String gebruikersInput = krijgEnVerwerkGebruikersInput.ontvangGebruikersInvoerTekst();
+		
+		Double kansOpTrigram = (double) 1;
+		Double kansOpBigram;
+		Double tussenResultaat;
+		Double eersteKeer = (double) 1;
 		
 		HashMap<String, Double> gebruikersInputTrigram = krijgEnVerwerkGebruikersInput.gebruikersInputTrigram(gebruikersInput);
 		HashMap<String, Double> gebruikersInputBigram = krijgEnVerwerkGebruikersInput.gebruikersInputBigram(gebruikersInput);
@@ -30,6 +37,14 @@ public class BerekenKansOpTaalTrigramMethode {
 		nederlandsTri.putAll(GenereerNGrams.getNGram(3, "HarryPotterNederlands"));
 		nederlandsBi.putAll(GenereerNGrams.getNGram(2, "HarryPotterNederlands"));
 		
+		for (Map.Entry<String, Double> entry : nederlandsTri.entrySet()) {	
+			for (Map.Entry<String, Double> entryTwee : gebruikersInputTrigram.entrySet()) {
+				if (entryTwee.getKey() == entry.getKey()) {									
+					kansOpTrigram *= entry.getValue();
+				}
+			}
+		}
+		System.out.println(kansOpTrigram);
 	}
 	
 	

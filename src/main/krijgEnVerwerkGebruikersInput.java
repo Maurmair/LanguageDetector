@@ -58,7 +58,7 @@ public class krijgEnVerwerkGebruikersInput {
 	static String ontvangGebruikersInvoerTekst(){
 		Scanner reader = new Scanner(System.in);
 		System.out.println("Voer tekst in voor taalherkenning: ");
-		String gebruikersInput = reader.nextLine();
+		String gebruikersInput = reader.nextLine().toLowerCase();
 		System.out.println(gebruikersInput);
 		reader.close();
 		return gebruikersInput;

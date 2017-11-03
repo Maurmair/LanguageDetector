@@ -21,7 +21,8 @@ public class Main {
 		 * TODO HOOGSTE VAN IEDERE TAAL => TAAL
 		 */
 		
-		krijgEnVerwerkGebruikersInput.ontvangGebuikersinput();
+		BerekenKansOpTaalTrigramMethode.berekenKansTrigrammen();
+//		krijgEnVerwerkGebruikersInput.ontvangGebuikersinput();
 		WriteHashMapToFile.writeFile(GenereerNGrams.getNGram(3, "HarryPotterNederlands"), "NLTrigram");
 		WriteHashMapToFile.writeFile(GenereerNGrams.getNGram(3, "HarryPotterDuits"), "GETrigram");
 		WriteHashMapToFile.writeFile(GenereerNGrams.getNGram(3, "HarryPotterEngels"), "ENTrigram");
@@ -45,3 +46,8 @@ public class Main {
 				
 	}
 }
+
+
+
+
+

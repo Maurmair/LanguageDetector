@@ -1,8 +1,10 @@
 package main;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused")
@@ -13,10 +15,20 @@ public class BerekenKansOpTaalTrigramMethode {
 				
 		String gebruikersInput = krijgEnVerwerkGebruikersInput.ontvangGebruikersInvoerTekst();
 		
-		Double kansOpTrigram = (double) 1;
-		Double kansOpBigram;
-		Double tussenResultaat;
+		List<Double> kansenTri = new ArrayList<Double>(); 
+		List<Double> kansenBi = new ArrayList<Double>(); 
+		
+		Double noemer = (double) 1;
+		Double teller = (double) 1;
+		Double kansOpNL = (double) 1;
+		Double kansOpDU = (double) 1;
+		Double kansOpIT = (double) 1;
+		Double kansOpEN = (double) 1;
+		Double kansOpFR = (double) 1;
+		Double kansOpSP = (double) 1;
 		Double eersteKeer = (double) 1;
+		
+		HashMap<String, Double> kansOpTalen = new HashMap<String, Double>();
 		
 		HashMap<String, Double> gebruikersInputTrigram = krijgEnVerwerkGebruikersInput.gebruikersInputTrigram(gebruikersInput);
 		HashMap<String, Double> gebruikersInputBigram = krijgEnVerwerkGebruikersInput.gebruikersInputBigram(gebruikersInput);
@@ -35,41 +47,77 @@ public class BerekenKansOpTaalTrigramMethode {
 		HashMap<String, Double> spaansBi = new HashMap<String, Double>();
 		
 		nederlandsTri.putAll(GenereerNGrams.getNGram(3, "HarryPotterNederlands"));
-		nederlandsBi.putAll(GenereerNGrams.getNGram(2, "HarryPotterNederlands"));
+		nederlandsBi.putAll(GenereerNGrams.getNGram(2, "HarryPotterNederlands"));				
+		duitTri.putAll(GenereerNGrams.getNGram(3, "HarryPotterDuits"));
+		duitsBi.putAll(GenereerNGrams.getNGram(2, "HarryPotterDuits"));
+		engelsTri.putAll(GenereerNGrams.getNGram(3, "HarryPotterEngels"));
+		engelsBi.putAll(GenereerNGrams.getNGram(2, "HarryPotterEngels"));	
+		fransTri.putAll(GenereerNGrams.getNGram(3, "HarryPotterFrans"));
+		fransBi.putAll(GenereerNGrams.getNGram(2, "HarryPotterFrans"));	
+		iteliaansTri.putAll(GenereerNGrams.getNGram(3, "HarryPotterIteliaans"));
+		iteliaansBi.putAll(GenereerNGrams.getNGram(2, "HarryPotterIteliaans"));	
+		spaansTri.putAll(GenereerNGrams.getNGram(3, "HarryPotterSpaans"));
+		spaansBi.putAll(GenereerNGrams.getNGram(2, "HarryPotterSpaans"));	
 		
-		for (Map.Entry<String, Double> entry : nederlandsTri.entrySet()) {	
-			for (Map.Entry<String, Double> entryTwee : gebruikersInputTrigram.entrySet()) {
-				if (entryTwee.getKey() == entry.getKey()) {									
-					kansOpTrigram *= entry.getValue();
-				}
+		kansOpNL = berekenKansOpTaal(kansenTri, kansenBi, noemer, teller, gebruikersInputTrigram, gebruikersInputBigram,
+				nederlandsTri, nederlandsBi);
+		kansOpDU = berekenKansOpTaal(kansenTri, kansenBi, noemer, teller, gebruikersInputTrigram, gebruikersInputBigram,
+				duitTri, duitsBi);
+		kansOpEN = berekenKansOpTaal(kansenTri, kansenBi, noemer, teller, gebruikersInputTrigram, gebruikersInputBigram,
+				engelsTri, engelsBi);
+		kansOpFR = berekenKansOpTaal(kansenTri, kansenBi, noemer, teller, gebruikersInputTrigram, gebruikersInputBigram,
+				fransTri, fransBi);
+		kansOpIT = berekenKansOpTaal(kansenTri, kansenBi, noemer, teller, gebruikersInputTrigram, gebruikersInputBigram,
+				iteliaansTri, iteliaansBi);
+		kansOpSP = berekenKansOpTaal(kansenTri, kansenBi, noemer, teller, gebruikersInputTrigram, gebruikersInputBigram,
+				spaansTri, spaansBi);
+		
+		kansOpTalen.put("Nederlands", kansOpNL);
+		kansOpTalen.put("Duits", kansOpDU);
+		kansOpTalen.put("Engels", kansOpEN);
+		kansOpTalen.put("Frans", kansOpFR);
+		kansOpTalen.put("Italiaans", kansOpIT);
+		kansOpTalen.put("Spaans", kansOpSP);
+		
+		Double uitkomst = Double.valueOf(0);
+		String antwoord = "";
+		
+		for (Map.Entry<String, Double> entry : kansOpTalen.entrySet()) {
+			if (entry.getValue() > uitkomst) {
+				uitkomst = entry.getValue();
+				antwoord = entry.getKey();
 			}
 		}
-		System.out.println(kansOpTrigram);
+		System.out.println(antwoord);
 	}
 	
 	
+
+	private static Double berekenKansOpTaal(List<Double> kansenTri, List<Double> kansenBi, Double noemer, Double teller,
+			HashMap<String, Double> gebruikersInputTrigram, HashMap<String, Double> gebruikersInputBigram,
+			HashMap<String, Double> nederlandsTri, HashMap<String, Double> nederlandsBi) {
+		Double kansOpTaal;
+		for (Map.Entry<String, Double> entry : nederlandsTri.entrySet()) {	
+			if (gebruikersInputTrigram.containsKey(entry.getKey())) {
+				kansenTri.add(entry.getValue());
+			}
+		}
+		
+		for (Double i : kansenTri) {
+			noemer *= i;
+		}
+		
+		for (Map.Entry<String, Double> entry : nederlandsBi.entrySet()) {	
+			if (gebruikersInputBigram.containsKey(entry.getKey())) {
+				kansenBi.add(entry.getValue());
+			}
+		}
+		
+		for (Double i : kansenBi) {
+			teller *= i;
+		}
+		
+		kansOpTaal = noemer / teller;
+		return kansOpTaal;
+	}	
 }
-
-
-/*
-GenereerNGrams.getNGram(3, "HarryPotterNederlands"), "NLTrigram");  
-GenereerNGrams.getNGram(3, "HarryPotterDuits"), "GETrigram");       
-GenereerNGrams.getNGram(3, "HarryPotterEngels"), "ENTrigram");      
-GenereerNGrams.getNGram(3, "HarryPotterFrans"), "FRTrigram");       
-GenereerNGrams.getNGram(3, "HarryPotterIteliaans"), "ITTrigram");   
-GenereerNGrams.getNGram(3, "HarryPotterSpaans"), "SPTrigram");      
-                                                                    
-GenereerNGrams.getNGram(2, "HarryPotterNederlands"), "NLBigram");   
-GenereerNGrams.getNGram(2, "HarryPotterDuits"), "GEBigram");        
-GenereerNGrams.getNGram(2, "HarryPotterEngels"), "ENBigram");       
-GenereerNGrams.getNGram(2, "HarryPotterFrans"), "FRBigram");        
-GenereerNGrams.getNGram(2, "HarryPotterIteliaans"), "ITBigram");    
-GenereerNGrams.getNGram(2, "HarryPotterSpaans"), "SPBigram");       
-                                                                    
-GenereerNGrams.getNGram(1, "HarryPotterNederlands"), "NLUnigram");  
-GenereerNGrams.getNGram(1, "HarryPotterDuits"), "GEUnigram");       
-GenereerNGrams.getNGram(1, "HarryPotterEngels"), "ENUnigram");      
-GenereerNGrams.getNGram(1, "HarryPotterFrans"), "FRUnigram");       
-GenereerNGrams.getNGram(1, "HarryPotterIteliaans"), "ITUnigram");   
-GenereerNGrams.getNGram(1, "HarryPotterSpaans"), "SPUnigram");      
-*/
